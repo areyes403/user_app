@@ -1,0 +1,13 @@
+<div class="container my-4">
+    <p>{{title}}</p>
+    
+    <div class="row">
+        <div class="col">
+        <user-form (newUserEventemmiter)="addUser($event)"/>
+        </div>
+        <div class="col">
+            <user [users]="users"/>
+        </div>
+    </div>
+</div>
+
