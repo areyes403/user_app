@@ -26,6 +26,7 @@ export class UserAppComponent implements OnInit{
     this.service.findAll().subscribe(users=>this.users=users);
     this.addUser();
     this.removeUser();
+    this.findUserById();
   }
 
   addUser(){
@@ -41,6 +42,13 @@ export class UserAppComponent implements OnInit{
         text: "Usuario guardado con exito!",
         icon: "success"
       });
+    });
+  }
+
+  findUserById(){
+    this.sharingData.findUserByIdEventEmmiter.subscribe(id=>{
+       const user = this.users.find(user => user.id == id);
+       this.sharingData.selectUserEventEmmiter.emit(user);
     });
   }
 
