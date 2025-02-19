@@ -32,11 +32,15 @@ export class UserAppComponent implements OnInit{
   addUser(){
     this.sharingData.newUserEventemmiter.subscribe(user=>{
       if(user.id>0){
-        this.users = this.users.map(u=> (u.id == user.id) ? {... user}: u);
+        this.service.update(user).subscribe(userUpdated => {
+          this.users = this.users.map(u=>(u.id == userUpdated.id) ? {...userUpdated} : u);
+        });
       }else{
-        this.users = [... this.users,{... user, id: new Date().getTime()}];
+        this.service.create(user).subscribe(newUser=>{
+          this.users = [... this.users,{... user, id: new Date().getTime()}];
+        });
       }
-      this.router.navigate(['/users'], {state: {users:this.users}});
+      this.router.navigate(['/users']);
       Swal.fire({
         title: "Guardado!",
         text: "Usuario guardado con exito!",

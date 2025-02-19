@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { map, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -8,14 +8,27 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserService {
 
+  private url: string = 'http://localhost:8080/user';
+
   private users:User[] = [];
+  
   constructor(
     private http:HttpClient
   ) { }
 
   findAll():Observable<User[]>{
-    return this.http.get('http://localhost:8080/user').pipe(
-      map((users: any) => users as User[])
-    );
+    return this.http.get<User[]>(this.url);
+  }
+
+  findById(id: number):Observable<User> {
+    return this.http.get<User>(`${this.url}/${id}`);
+  }
+
+  create(user:User):Observable<User>{
+    return this.http.post<User>(this.url, user);
+  }
+  
+  update(user:User):Observable<User>{
+    return this.http.put<User>(`${this.url}/${user.id}`,user);
   }
 }
