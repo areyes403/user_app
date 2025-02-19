@@ -1,32 +1,21 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private users:User[] = [
-    {
-      id:1,
-      name:'Andres',
-      lastname:'Guzman',
-      email:'andres@gmail.com',
-      username:'andres',
-      password:'123456'
-    },{
-      id:2,
-      name:'Josefa',
-      lastname:'Doe',
-      email:'josefa.doe@gmail.com',
-      username:'pepa',
-      password:'123456'
-    }
-  ];
-  constructor() { }
+  private users:User[] = [];
+  constructor(
+    private http:HttpClient
+  ) { }
 
   findAll():Observable<User[]>{
-    return of(this.users);
+    return this.http.get('http://localhost:8080/user').pipe(
+      map((users: any) => users as User[])
+    );
   }
 }
